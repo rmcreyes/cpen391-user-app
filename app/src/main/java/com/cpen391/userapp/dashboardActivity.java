@@ -32,14 +32,5 @@ public class dashboardActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
-        /*BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        NavController navController = Navigation.findNavController(this, R.id.navHostFragment);
-        NavigationUI.setupWithNavController(bottomNav, navController);*/
-
-
-
     }
-
 }

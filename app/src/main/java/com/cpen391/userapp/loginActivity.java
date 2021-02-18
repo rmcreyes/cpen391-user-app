@@ -43,8 +43,6 @@ public class loginActivity extends AppCompatActivity {
                 map.put(Constants.email, emailEdit.getText().toString());
                 map.put(Constants.password, passwordEdit.getText().toString());
 
-
-
                 Call<loginResult> call = retrofitInterface.executeLogin(map);
                 call.enqueue(new Callback <loginResult>() {
                     @Override
