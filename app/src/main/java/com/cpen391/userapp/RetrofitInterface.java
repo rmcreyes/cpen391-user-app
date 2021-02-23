@@ -1,7 +1,6 @@
 package com.cpen391.userapp;
 
 import com.cpen391.userapp.dashboardFragments.home.meResult;
-import com.cpen391.userapp.loginResult;
 
 import java.util.HashMap;
 
@@ -15,6 +14,7 @@ import retrofit2.http.PUT;
 /**
 * Define the interface to connect with backend API
 **/
+
 public interface RetrofitInterface {
     @POST("/api/user/login")
     Call<loginResult> executeLogin(@Body HashMap<String, String> map);

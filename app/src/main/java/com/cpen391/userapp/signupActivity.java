@@ -45,7 +45,6 @@ public class signupActivity extends AppCompatActivity {
         signupBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-
                 Constants.closeKeyboard(signupActivity.this);
 
                 // debug message
@@ -57,7 +56,6 @@ public class signupActivity extends AppCompatActivity {
                 map.put(Constants.lastName, lastName.getText().toString());
                 map.put(Constants.email, emailEdit.getText().toString());
                 map.put(Constants.password, passwordEdit.getText().toString());
-
 
                 /* check that all fields are filled */
                 if (checkEntryValid(map)!= true){

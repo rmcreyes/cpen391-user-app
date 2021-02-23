@@ -20,4 +20,3 @@ public class loginResult {
         return token;
     }
 }
-
