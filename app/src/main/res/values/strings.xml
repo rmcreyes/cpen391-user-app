@@ -22,7 +22,7 @@
     <!-- car pages -->
     <string name="no_cars_registered">No Cars Registered Yet!</string>
     <string name="Register_a_New_Car">Register a New Car!</string>
-    <string name="Registered_cars">Registered Cars:</string>
+    <string name="Registered_cars">Registered Cars</string>
     <string name="Add_New_Plate">Add New Plate</string>
     <string name="Plate_Number">Plate Number</string>
     <string name="plate_example">ABC123</string>

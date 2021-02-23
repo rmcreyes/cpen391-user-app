@@ -1,5 +1,6 @@
 package com.cpen391.userapp.dashboardFragments.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -123,7 +124,11 @@ public class PersonalInfoFragment extends Fragment {
                     Toast.makeText(getActivity(), response.message(), Toast.LENGTH_LONG).show();
                 }
                 else {
-
+                    // for now just log out if token expires or if we get other API errors codes
+                    MainActivity.sp.edit().putBoolean(Constants.sp_logged, false).apply();
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
                 }
             }
             @Override

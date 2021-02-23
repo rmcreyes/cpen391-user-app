@@ -1,4 +1,5 @@
 package com.cpen391.userapp.dashboardFragments.home;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -153,10 +154,12 @@ public class HomeFragment extends Fragment {
                     nameText.setText(Constants.welcome + userInfo.get(Constants.firstName) + Constants.exclamation);
                 }
                 /* Unsuccessful API call handling */
-                else if (response.code() == 500){
-                }
                 else {
-
+                    // for now, just log out if token expires or if we get other API errors codes
+                    MainActivity.sp.edit().putBoolean(Constants.sp_logged, false).apply();
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
                 }
             }
             @Override
