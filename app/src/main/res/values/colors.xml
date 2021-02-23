@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#1365CA</color>
+    <color name="primary">#1976D2</color>
     <color name="dashboard_background">#F0F1F3</color>
     <color name="edit">#0091EA</color>
     <color name="teal_700">#FF018786</color>

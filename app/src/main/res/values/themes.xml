@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.CPEN391UserApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#1365CA</item>
+        <item name="colorPrimary">#1976D2</item>
         <item name="colorPrimaryVariant">#2196F3</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
