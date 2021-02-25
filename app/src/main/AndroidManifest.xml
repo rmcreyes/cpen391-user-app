@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.CPEN391UserApp">
-        <activity android:name=".dashboardActivity"></activity>
+        <activity android:name=".dashboardActivity" android:windowSoftInputMode="adjustNothing"></activity>
         <activity android:name=".signupActivity" />
         <activity android:name=".loginActivity" />
         <activity android:name=".MainActivity">

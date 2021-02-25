@@ -37,6 +37,7 @@ public class loginActivity extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
+                Constants.closeKeyboard(loginActivity.this);
 
                 /* put log in values in a hashmap*/
                 HashMap<String, String> map = new HashMap<>();

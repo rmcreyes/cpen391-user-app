@@ -45,6 +45,7 @@ public class signupActivity extends AppCompatActivity {
         signupBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
+                Constants.closeKeyboard(signupActivity.this);
 
                 // debug message
                 Toast.makeText(signupActivity.this, Constants.signup_debug_msg, Toast.LENGTH_SHORT).show();
@@ -55,9 +56,6 @@ public class signupActivity extends AppCompatActivity {
                 map.put(Constants.lastName, lastName.getText().toString());
                 map.put(Constants.email, emailEdit.getText().toString());
                 map.put(Constants.password, passwordEdit.getText().toString());
-
-                // will take out one API call takes out the licensePlate field
-                map.put("licensePlate", "123ABC");
 
                 /* check that all fields are filled */
                 if (checkEntryValid(map)!= true){
