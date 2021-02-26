@@ -22,6 +22,8 @@ import com.cpen391.userapp.MainActivity;
 import com.cpen391.userapp.R;
 import com.cpen391.userapp.RetrofitInterface;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 
 import retrofit2.Call;
@@ -121,18 +123,27 @@ public class PersonalInfoFragment extends Fragment {
 
                 }
                 else if (response.code() == 422){
-                    Toast.makeText(getActivity(), response.message(), Toast.LENGTH_LONG).show();
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        Toast.makeText(getContext(), "Edit failed: "+ jObjError.getString("message"), Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
                 }
-                else {
+                else if (response.code() == 401){
                     // for now just log out if token expires or if we get other API errors codes
                     MainActivity.sp.edit().putBoolean(Constants.sp_logged, false).apply();
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 }
+                else {
+                    Toast.makeText(getActivity(), "Server Error, please try again later", Toast.LENGTH_LONG).show();
+                }
             }
             @Override
             public void onFailure(Call<Void> call, Throwable t){
+                Toast.makeText(getActivity(), "System Error, please try again later", Toast.LENGTH_LONG).show();
             }
         });
     }

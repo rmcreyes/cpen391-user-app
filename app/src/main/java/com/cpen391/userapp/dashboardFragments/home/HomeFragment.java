@@ -21,6 +21,7 @@ import com.cpen391.userapp.MainActivity;
 import com.cpen391.userapp.R;
 import com.cpen391.userapp.RetrofitInterface;
 import com.cpen391.userapp.dashboardFragments.car.ParkedCarsRecycler;
+import com.cpen391.userapp.loginActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -154,17 +155,27 @@ public class HomeFragment extends Fragment {
                     nameText.setText(Constants.welcome + userInfo.get(Constants.firstName) + Constants.exclamation);
                 }
                 /* Unsuccessful API call handling */
-                else {
+                else if (response.code() == 401){
+                    /* Authentication error: token expired */
+                    Toast.makeText(getActivity(), Constants.tokenError, Toast.LENGTH_LONG).show();
                     // for now, just log out if token expires or if we get other API errors codes
                     MainActivity.sp.edit().putBoolean(Constants.sp_logged, false).apply();
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 }
+                else {
+                    /* server error, print generic welcome message but prompt user to re login */
+                    Toast.makeText(getContext(), Constants.serverError, Toast.LENGTH_SHORT).show();
+                    TextView nameText = v.findViewById(R.id.Welcome);
+                    nameText.setText(Constants.welcome + Constants.exclamation);
+                }
             }
             @Override
             public void onFailure(Call<meResult> call, Throwable t){
-                Toast.makeText(getContext(), Constants.failedMessage, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), Constants.systemError, Toast.LENGTH_SHORT).show();
+                TextView nameText = v.findViewById(R.id.Welcome);
+                nameText.setText(Constants.welcome + Constants.exclamation);
             }
         });
     }
