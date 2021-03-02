@@ -1,4 +1,5 @@
 package com.cpen391.userapp.dashboardFragments.car;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,8 +21,6 @@ import com.cpen391.userapp.Constants;
 import com.cpen391.userapp.MainActivity;
 import com.cpen391.userapp.R;
 import com.cpen391.userapp.RetrofitInterface;
-import com.cpen391.userapp.dashboardFragments.home.meResult;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -80,7 +79,6 @@ public class CarFragment extends Fragment implements CarsRecycler.OnItemListener
     private void createList(){
         getAllCars();
     }
-
 
     /* initiate the recycler view of the car list.
     *  Show the "EMPTY" message if list is empty
@@ -147,7 +145,6 @@ public class CarFragment extends Fragment implements CarsRecycler.OnItemListener
             }
         });
     }
-
 
     /* Navigation to the edit page of each cardView item (car item), when the card is clicked */
     @Override

@@ -21,7 +21,6 @@ import com.cpen391.userapp.MainActivity;
 import com.cpen391.userapp.R;
 import com.cpen391.userapp.RetrofitInterface;
 import com.cpen391.userapp.dashboardFragments.car.ParkedCarsRecycler;
-import com.cpen391.userapp.loginActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -33,7 +33,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-
 public class addPlateFragment extends Fragment {
 
     private View v;
@@ -99,7 +98,6 @@ public class addPlateFragment extends Fragment {
         HashMap<String, String> map = new HashMap<>();
         map.put(Constants.licensePlate, plateNo.getText().toString());
         map.put(Constants.carName, carNickName.getText().toString());
-
 
         Call<Void> call = retrofitInterface.postCar(MainActivity.sp.getString(Constants.userId, ""), "Bear "+ MainActivity.sp.getString(Constants.token, ""), map);
         call.enqueue(new Callback<Void>() {

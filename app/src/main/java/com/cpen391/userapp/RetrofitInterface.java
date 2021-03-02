@@ -43,5 +43,4 @@ public interface RetrofitInterface {
     @DELETE("/api/car/{user_id}/{car_id}")
     Call<Void> deleteCar (@Path(value = "user_id", encoded = true) String userId, @Path(value = "car_id", encoded = true) String carId, @Header("Authorization") String authHeader);
 
-
 }

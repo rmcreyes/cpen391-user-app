@@ -23,7 +23,6 @@ import com.cpen391.userapp.R;
 import com.cpen391.userapp.RetrofitInterface;
 
 import org.json.JSONObject;
-
 import java.util.HashMap;
 
 import retrofit2.Call;
