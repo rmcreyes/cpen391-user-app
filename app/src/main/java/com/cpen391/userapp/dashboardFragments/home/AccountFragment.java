@@ -46,6 +46,14 @@ public class AccountFragment extends Fragment {
         bundle.putString(Constants.firstName, getArguments().getString(Constants.firstName));
         bundle.putString(Constants.lastName, getArguments().getString(Constants.lastName));
         bundle.putString(Constants.email, getArguments().getString(Constants.email));
+
+        /* Hide the Admin specific functions if this is not an Admin account */
+        if(!MainActivity.sp.getBoolean(Constants.admin,false)){
+            CardView meterStatus = v.findViewById(R.id.meterStatus);
+            TextView adminText = v.findViewById(R.id.adminText);
+            meterStatus.setVisibility(v.GONE);
+            adminText.setVisibility(v.GONE);
+        }
         return v;
     }
 
@@ -96,6 +104,15 @@ public class AccountFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 navController.navigate(R.id.action_accountFragment_to_personalInfoFragment, bundle);
+            }
+        });
+
+        /* Navigation to the payment method page */
+        CardView meterStatus = v.findViewById(R.id.meterStatus);
+        meterStatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navController.navigate(R.id.action_accountFragment_to_adminFragment, bundle);
             }
         });
     }

@@ -8,6 +8,8 @@ public class meResult {
     private String firstName;
     private String lastName;
     private String licensePlate;
+    private Boolean isAdmin = false;
+
 
     public String getEmail() {
         return email;
@@ -27,5 +29,8 @@ public class meResult {
 
     public String getLicensePlate() {
         return licensePlate;
+    }
+    public Boolean getAdmin() {
+        return isAdmin;
     }
 }

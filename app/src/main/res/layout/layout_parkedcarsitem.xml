@@ -159,7 +159,8 @@
                     android:id="@+id/Text3"
                     android:layout_width="63dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_gravity="center_vertical"
                     android:inputType="textPersonName"
                     android:text="@string/Cost"
                     android:textSize="23dp" />
@@ -168,7 +169,7 @@
                     android:id="@+id/Text4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
+                    android:layout_gravity="center_vertical"
                     android:inputType="text"
                     android:text="$"
                     android:textSize="23dp" />

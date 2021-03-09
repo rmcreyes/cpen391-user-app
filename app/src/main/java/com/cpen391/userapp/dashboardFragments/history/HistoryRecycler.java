@@ -51,7 +51,6 @@ public class HistoryRecycler extends RecyclerView.Adapter<HistoryRecycler.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.plateNo.setText(historyList.get(position).get(Constants.plateNo));
-        holder.carNickName.setText(historyList.get(position).get(Constants.carNickName));
         holder.date.setText(historyList.get(position).get(Constants.date));
         holder.cost.setText(historyList.get(position).get(Constants.cost));
     }
@@ -69,7 +68,7 @@ public class HistoryRecycler extends RecyclerView.Adapter<HistoryRecycler.ViewHo
      * implements onClickListener; each item is clickable
      */
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        TextView plateNo, carNickName, date, cost;
+        TextView plateNo, date, cost;
         OnItemListener onItemListener;
 
         /**
@@ -80,7 +79,6 @@ public class HistoryRecycler extends RecyclerView.Adapter<HistoryRecycler.ViewHo
         public ViewHolder(View itemView, OnItemListener onItemListener){
             super(itemView);
             plateNo = itemView.findViewById(R.id.plateNo);
-            carNickName = itemView.findViewById(R.id.carNickName);
             cost = itemView.findViewById(R.id.cost);
             date = itemView.findViewById(R.id.date);
 
