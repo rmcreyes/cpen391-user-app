@@ -15,6 +15,14 @@ public class Constants {
     public final static String Bear = "Bear";
     public final static String failedMessage = "API call Failed";
     public final static String saveSuccess ="Success! Changes Saved";
+    public final static String systemError ="System Error, please try again later";
+    public final static String serverError ="Server error, please try re logging in";
+    public final static String tokenError="Token Expired, please log in again";
+    public final static String delError="Delete Failed: ";
+    public final static String carDeleted="Car successfully deleted!";
+    public final static String editPlateError="Edit plate failed: ";
+    public final static String addPlateError= "Add plate failed: ";
+    public final static String tokenRefresh= "tokenRefresh";
 
     /* log in messages*/
     public final static String login_Incorrect_msg = "Incorrect Email or Password";
@@ -33,10 +41,12 @@ public class Constants {
     public final static String password = "password";
     public final static String token = "token";
     public final static String userId = "userId";
+    public final static String id = "id";
     /* Car messages */
     public final static String plateNo = "plateNo";
     public final static String licensePlate = "licensePlate";
     public final static String carNickName = "carNickName";
+    public final static String carName = "carName";
     public final static String startTime = "startTime";
     public final static String meterNo = "meterNo";
     public final static String duration = "duration";

@@ -62,7 +62,7 @@
     <string name="Date_example">2021-03-04</string>
     <string name="Parked_At">Parked At</string>
     <string name="Parked_At_example">10:00 AM</string>
-    <string name="Duration">Parked At</string>
+    <string name="Duration">Duration</string>
     <string name="Duration_example">00:56:33</string>
     <string name="Meter_Number">Meter Number</string>
     <string name="Meter_Number_example">0015</string>
