@@ -122,7 +122,7 @@ public class HomeFragment extends Fragment {
         map1.put("carNickName", "Honda");
         map1.put("meterNo", "000001");
 
-        String st = "2021-03-08T02:25:25.165Z";
+        String st = "2021-03-09T12:25:25.165Z";
 
         try {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
