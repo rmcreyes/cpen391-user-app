@@ -64,12 +64,7 @@ public class AdminFragment extends Fragment {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Constants.closeKeyboard(getActivity());
-                Bundle bundle = new Bundle();
-                bundle.putString(Constants.firstName, getArguments().getString(Constants.firstName));
-                bundle.putString(Constants.lastName, getArguments().getString(Constants.lastName));
-                bundle.putString(Constants.email, getArguments().getString(Constants.email));
-                navController.navigate(R.id.action_adminFragment_to_accountFragment, bundle);
+                navController.navigate(R.id.action_adminFragment_to_accountFragment);
             }
         });
     }

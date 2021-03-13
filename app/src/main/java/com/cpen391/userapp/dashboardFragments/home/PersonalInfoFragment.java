@@ -37,7 +37,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class PersonalInfoFragment extends Fragment {
 
     private View v;
-    private Bundle bundle = new Bundle();
     private EditText lastNameEdit;
     private EditText firstNameEdit;
     private EditText emailEdit;
@@ -54,14 +53,9 @@ public class PersonalInfoFragment extends Fragment {
         lastNameEdit = v.findViewById(R.id.lastNameEdit);
         firstNameEdit = v.findViewById(R.id.firstNameEdit);
         emailEdit = v.findViewById(R.id.emailEdit);
-        emailEdit.setText(getArguments().getString(Constants.email));
-        firstNameEdit.setText(getArguments().getString(Constants.firstName));
-        lastNameEdit.setText(getArguments().getString(Constants.lastName));
-
-        /* save arguments in a bundle first, in case user doesn't save new changes */
-        bundle.putString(Constants.firstName, getArguments().getString(Constants.firstName));
-        bundle.putString(Constants.lastName, getArguments().getString(Constants.lastName));
-        bundle.putString(Constants.email, getArguments().getString(Constants.email));
+        emailEdit.setText(MainActivity.sp.getString(Constants.email, null));
+        firstNameEdit.setText(MainActivity.sp.getString(Constants.firstName, null));
+        lastNameEdit.setText(MainActivity.sp.getString(Constants.lastName,null));
 
         return v;
     }
@@ -77,7 +71,7 @@ public class PersonalInfoFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Constants.closeKeyboard(getActivity());
-                navController.navigate(R.id.action_personalInfoFragment_to_accountFragment, bundle);
+                navController.navigate(R.id.action_personalInfoFragment_to_accountFragment);
             }
         });
 
@@ -116,9 +110,9 @@ public class PersonalInfoFragment extends Fragment {
                 if (response.code() == 200) {
                     Toast.makeText(getActivity(), Constants.saveSuccess, Toast.LENGTH_LONG).show();
 
-                    bundle.putString(Constants.firstName, firstNameEdit.getText().toString());
-                    bundle.putString(Constants.lastName, lastNameEdit.getText().toString());
-                    bundle.putString(Constants.email, emailEdit.getText().toString());
+                    MainActivity.sp.edit().putString(Constants.firstName, firstNameEdit.getText().toString()).apply();
+                    MainActivity.sp.edit().putString(Constants.lastName, lastNameEdit.getText().toString()).apply();
+                    MainActivity.sp.edit().putString(Constants.email, emailEdit.getText().toString()).apply();
 
                 }
                 else if (response.code() == 422){
@@ -131,7 +125,7 @@ public class PersonalInfoFragment extends Fragment {
                 }
                 else if (response.code() == 401){
                     // for now just log out if token expires or if we get other API errors codes
-                    MainActivity.sp.edit().putBoolean(Constants.sp_logged, false).apply();
+                    Constants.tokenExpired();
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);

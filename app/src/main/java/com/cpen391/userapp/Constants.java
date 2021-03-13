@@ -2,6 +2,7 @@ package com.cpen391.userapp;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,8 +11,8 @@ public class Constants {
 
     /* API call constant strings */
     /* Base url for server, change if want to just connect to localhost */
-    public final static String BASE_URL = "https://backend391.herokuapp.com/";
-    //public final static String BASE_URL = "http://10.0.2.2:80";
+    //public final static String BASE_URL = "https://backend391.herokuapp.com/";
+    public final static String BASE_URL = "http://10.0.2.2:80";
     public final static String Bear = "Bear";
     public final static String failedMessage = "API call Failed";
     public final static String saveSuccess ="Success! Changes Saved";
@@ -72,5 +73,13 @@ public class Constants {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
+
+    public static void tokenExpired(){
+        MainActivity.sp.edit().putBoolean(Constants.sp_logged, false).apply();
+        MainActivity.sp.edit().remove(Constants.email).apply();
+        MainActivity.sp.edit().remove(Constants.firstName).apply();
+        MainActivity.sp.edit().remove(Constants.lastName).apply();
+    }
+
 
 }

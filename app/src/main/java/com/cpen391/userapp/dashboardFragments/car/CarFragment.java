@@ -21,6 +21,8 @@ import com.cpen391.userapp.Constants;
 import com.cpen391.userapp.MainActivity;
 import com.cpen391.userapp.R;
 import com.cpen391.userapp.RetrofitInterface;
+import com.facebook.shimmer.ShimmerFrameLayout;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -36,6 +38,7 @@ public class CarFragment extends Fragment implements CarsRecycler.OnItemListener
     private View v;
     public Retrofit retrofit;
     private static RetrofitInterface retrofitInterface;
+    private ShimmerFrameLayout shimmer;
 
     /**
      * To create a new instance of the CarFragment
@@ -46,6 +49,8 @@ public class CarFragment extends Fragment implements CarsRecycler.OnItemListener
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
 
         v = inflater.inflate(R.layout.fragment_car,container,false);
+        shimmer = v.findViewById(R.id.shimmer);
+        shimmer.startShimmer();
         /* create Retrofit component for REST API communication */
         retrofit = new Retrofit.Builder()
                 .baseUrl(Constants.BASE_URL)
@@ -86,11 +91,16 @@ public class CarFragment extends Fragment implements CarsRecycler.OnItemListener
     private void initRecyclerView(){
         RecyclerView recyclerView = v.findViewById(R.id.carList);
         TextView emptyView = v.findViewById(R.id.empty_view);
+        shimmer.stopShimmer();
+        shimmer.hideShimmer();
+        shimmer.setVisibility(View.GONE);
         if(carList.isEmpty()){
             recyclerView.setVisibility(View.GONE);
             emptyView.setVisibility(View.VISIBLE);
 
         }else {
+            recyclerView.setVisibility(View.VISIBLE);
+            emptyView.setVisibility(View.GONE);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
             recyclerView.setLayoutManager(layoutManager);
             CarsRecycler adapter = new CarsRecycler(getContext(), carList, this);
@@ -128,7 +138,7 @@ public class CarFragment extends Fragment implements CarsRecycler.OnItemListener
                 else if (response.code() == 401){
                     Toast.makeText(getActivity(), Constants.tokenError, Toast.LENGTH_LONG).show();
                     // for now, just log out if token expires or if we get other API errors codes
-                    MainActivity.sp.edit().putBoolean(Constants.sp_logged, false).apply();
+                    Constants.tokenExpired();
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);

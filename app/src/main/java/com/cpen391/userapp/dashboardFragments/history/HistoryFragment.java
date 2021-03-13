@@ -19,6 +19,7 @@ import com.cpen391.userapp.MainActivity;
 import com.cpen391.userapp.R;
 import com.cpen391.userapp.RetrofitInterface;
 import com.cpen391.userapp.dashboardFragments.home.currParkResult;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -39,11 +40,14 @@ public class HistoryFragment extends Fragment implements HistoryRecycler.OnItemL
     private View v;
     public Retrofit retrofit;
     private static RetrofitInterface retrofitInterface;
+    private ShimmerFrameLayout shimmer;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
         v = inflater.inflate(R.layout.fragment_history,container,false);
+        shimmer = v.findViewById(R.id.shimmer);
+        shimmer.startShimmer();
 
         /* create Retrofit component for REST API communication */
         retrofit = new Retrofit.Builder()
@@ -65,6 +69,9 @@ public class HistoryFragment extends Fragment implements HistoryRecycler.OnItemL
     private void initRecyclerView(){
         RecyclerView recyclerView = v.findViewById(R.id.historyList);
         TextView emptyView = v.findViewById(R.id.empty_view);
+        shimmer.stopShimmer();
+        shimmer.hideShimmer();
+        shimmer.setVisibility(View.GONE);
 
         /* set the empty message if the list is empty */
         if(historyList.isEmpty()){
@@ -72,6 +79,8 @@ public class HistoryFragment extends Fragment implements HistoryRecycler.OnItemL
             emptyView.setVisibility(View.VISIBLE);
 
         }else {
+            recyclerView.setVisibility(View.VISIBLE);
+            emptyView.setVisibility(View.GONE);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
             recyclerView.setLayoutManager(layoutManager);
             HistoryRecycler adapter = new HistoryRecycler(getContext(), historyList, this);
@@ -179,7 +188,7 @@ public class HistoryFragment extends Fragment implements HistoryRecycler.OnItemL
                     /* Authentication error: token expired */
                     Toast.makeText(getActivity(), Constants.tokenError, Toast.LENGTH_LONG).show();
                     // for now, just log out if token expires or if we get other API errors codes
-                    MainActivity.sp.edit().putBoolean(Constants.sp_logged, false).apply();
+                    Constants.tokenExpired();
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);

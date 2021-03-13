@@ -41,7 +41,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
         </androidx.recyclerview.widget.RecyclerView>
 
@@ -52,6 +53,19 @@
             android:gravity="center"
             android:text="@string/no_cars_registered"
             android:visibility="gone" />
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center">
+            <include
+                layout="@layout/shimmer_carsitem"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                />
+        </com.facebook.shimmer.ShimmerFrameLayout>
     </LinearLayout>
 
     <LinearLayout
