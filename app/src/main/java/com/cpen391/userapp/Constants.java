@@ -52,9 +52,17 @@ public class Constants {
     public final static String duration = "duration";
     public final static String cost = "cost";
     public final static String date = "date";
+    public final static String endTime = "endTime";
     /* Home page messages */
     public final static String welcome = "Welcome Back, ";
     public final static String exclamation = "!";
+    /* Admin */
+    public final static String Occupied = "Occupied";
+    public final static String isOccupied = "isOccupied";
+    public final static String Empty = "Empty";
+    public final static String unitPrice = "unitPrice";
+    public final static String updated = "updated";
+    public final static String admin= "admin";
 
 
     public static void closeKeyboard(Activity activity){

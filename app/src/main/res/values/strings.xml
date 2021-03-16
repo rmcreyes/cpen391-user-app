@@ -39,7 +39,7 @@
     <string name="Account">Account</string>
     <string name="Full_Name">Full Name</string>
     <string name="email_example">email@gmail.com</string>
-    <string name="Profile">Profile Name</string>
+    <string name="Profile">Profile</string>
     <string name="Personal_Info">Personal Info</string>
     <string name="Payment_Method">Payment Method</string>
     <string name="Notification">Notification</string>
@@ -53,6 +53,8 @@
     <string name="Card_Number">Card Number</string>
     <string name="Edit_Payment_Info">Edit Payment Info</string>
     <string name="Edit_Personal_Info">Edit Personal Info</string>
+    <string name="Admin">Admin</string>
+    <string name="View_Meter_Status">View Meter Status</string>
 
     <!-- history pages -->
     <string name="No_Parking_History_Yet">No Parking History Yet!</string>
@@ -63,9 +65,9 @@
     <string name="Parked_At">Parked At</string>
     <string name="Parked_At_example">10:00 AM</string>
     <string name="Duration">Duration</string>
-    <string name="Duration_example">00:56:33</string>
+    <string name="Duration_example">00:56</string>
     <string name="Meter_Number">Meter Number</string>
-    <string name="Meter_Number_example">0015</string>
+    <string name="Meter_Number_example">5a91ca</string>
     <string name="Cost">Cost</string>
     <string name="cost_example">3.11</string>
 
@@ -73,5 +75,14 @@
     <string name="welcome_back">Welcome Back,</string>
     <string name="Currently_Parked_Cars">Currently Parked Cars:</string>
     <string name="No_Currently_Parked_Cars">No Currently Parked Cars!</string>
+
+    <!-- Admin page -->
+    <string name="Occupied">Occupied</string>
+    <string name="Empty">Empty</string>
+    <string name="Last_Updated">Updated:</string>
+    <string name="time_example">2021-02-25 02:18:00</string>
+    <string name="Unit_price">Unit Price (Hourly): $</string>
+    <string name="No_Meters">No Registered Meters Yet!</string>
+    <string name="Meter_Status">Meter Status</string>
 
 </resources>

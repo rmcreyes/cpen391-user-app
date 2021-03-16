@@ -1,9 +1,14 @@
 package com.cpen391.userapp;
 
 import com.cpen391.userapp.dashboardFragments.car.allCarsResult;
+import com.cpen391.userapp.dashboardFragments.history.historyResult;
+import com.cpen391.userapp.dashboardFragments.home.currParkResult;
 import com.cpen391.userapp.dashboardFragments.home.meResult;
+import com.cpen391.userapp.dashboardFragments.home.meterResult;
+import com.cpen391.userapp.dashboardFragments.home.oneCarResult;
 
 import java.util.HashMap;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -42,5 +47,16 @@ public interface RetrofitInterface {
 
     @DELETE("/api/car/{user_id}/{car_id}")
     Call<Void> deleteCar (@Path(value = "user_id", encoded = true) String userId, @Path(value = "car_id", encoded = true) String carId, @Header("Authorization") String authHeader);
+
+    @GET("/api/car/{user_id}/{car_id}")
+    Call<oneCarResult> getOneCar (@Path(value = "user_id", encoded = true) String userId, @Path(value = "car_id", encoded = true) String carId, @Header("Authorization") String authHeader);
+
+    @GET("/api/meter/all")
+    Call<List<meterResult>> getMeter ();
+
+    @GET("/api/parking/{user_id}/current")
+    Call<currParkResult> getCurrParking (@Path(value = "user_id", encoded = true) String userId, @Header("Authorization") String authHeader);
+    @GET("/api/parking/{user_id}/previous")
+    Call<historyResult> getPastParking (@Path(value = "user_id", encoded = true) String userId, @Header("Authorization") String authHeader);
 
 }
