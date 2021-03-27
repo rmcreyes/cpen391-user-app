@@ -42,11 +42,6 @@ public class AccountFragment extends Fragment {
         /* Inflate the layout for this fragment */
         v = inflater.inflate(R.layout.fragment_account,container,false);
 
-        /* Save the user information to be passed to other setting pages */
-        bundle.putString(Constants.firstName, getArguments().getString(Constants.firstName));
-        bundle.putString(Constants.lastName, getArguments().getString(Constants.lastName));
-        bundle.putString(Constants.email, getArguments().getString(Constants.email));
-
         /* Hide the Admin specific functions if this is not an Admin account */
         if(!MainActivity.sp.getBoolean(Constants.admin,false)){
             CardView meterStatus = v.findViewById(R.id.meterStatus);
@@ -65,8 +60,8 @@ public class AccountFragment extends Fragment {
         /* Set the user information with the given arguments */
         TextView fullname = v.findViewById(R.id.fullname);
         TextView email = v.findViewById(R.id.email);
-        email.setText(getArguments().getString(Constants.email));
-        fullname.setText(getArguments().getString(Constants.firstName) + " " +getArguments().getString(Constants.lastName));
+        email.setText(MainActivity.sp.getString(Constants.email, null));
+        fullname.setText(MainActivity.sp.getString(Constants.firstName, null) + " " +MainActivity.sp.getString(Constants.lastName, null));
 
         /* navigation for the Back button in the header */
         ImageButton backBtn = v.findViewById(R.id.back);
@@ -82,7 +77,7 @@ public class AccountFragment extends Fragment {
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MainActivity.sp.edit().putBoolean(Constants.sp_logged, false).apply();
+                Constants.tokenExpired();
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
@@ -94,7 +89,7 @@ public class AccountFragment extends Fragment {
         payment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                navController.navigate(R.id.action_accountFragment_to_paymentFragment, bundle);
+                navController.navigate(R.id.action_accountFragment_to_paymentFragment);
             }
         });
 
@@ -103,7 +98,7 @@ public class AccountFragment extends Fragment {
         personalInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                navController.navigate(R.id.action_accountFragment_to_personalInfoFragment, bundle);
+                navController.navigate(R.id.action_accountFragment_to_personalInfoFragment);
             }
         });
 
@@ -112,7 +107,7 @@ public class AccountFragment extends Fragment {
         meterStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                navController.navigate(R.id.action_accountFragment_to_adminFragment, bundle);
+                navController.navigate(R.id.action_accountFragment_to_adminFragment);
             }
         });
     }

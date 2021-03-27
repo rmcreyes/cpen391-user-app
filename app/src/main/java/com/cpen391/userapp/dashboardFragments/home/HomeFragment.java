@@ -22,6 +22,7 @@ import com.cpen391.userapp.R;
 import com.cpen391.userapp.RetrofitInterface;
 import com.cpen391.userapp.dashboardFragments.car.ParkedCarsRecycler;
 import com.cpen391.userapp.dashboardFragments.car.allCarsResult;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -41,9 +42,9 @@ public class HomeFragment extends Fragment {
 
     private ArrayList<HashMap<String, String>> parkedCarsList = new ArrayList<>();
     private View v;
-    private HashMap<String, String> userInfo = new HashMap<>();
     public Retrofit retrofit;
     private static RetrofitInterface retrofitInterface;
+    private ShimmerFrameLayout shimmer;
 
     /**
      * To create a new instance of the HomeFragment
@@ -55,6 +56,8 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         v = inflater.inflate(R.layout.fragment_home, container, false);
+        shimmer = v.findViewById(R.id.shimmer);
+        shimmer.startShimmer();
 
         /* create Retrofit component for REST API communication */
         retrofit = new Retrofit.Builder()
@@ -63,7 +66,13 @@ public class HomeFragment extends Fragment {
                 .build();
         retrofitInterface = retrofit.create(RetrofitInterface.class);
         /* Get the user information from the database */
-        getMe();
+        if(!MainActivity.sp.contains(Constants.firstName)){
+            getMe();
+        }
+        else{
+            TextView nameText = v.findViewById(R.id.Welcome);
+            nameText.setText(Constants.welcome + MainActivity.sp.getString(Constants.firstName, null) + Constants.exclamation);
+        }
         /* initialize the list for all currently parked cars */
         createList();
         return v;
@@ -79,11 +88,7 @@ public class HomeFragment extends Fragment {
         accountBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putString(Constants.firstName, userInfo.get(Constants.firstName));
-                bundle.putString(Constants.lastName, userInfo.get(Constants.lastName));
-                bundle.putString(Constants.email, userInfo.get(Constants.email));
-                navController.navigate(R.id.action_homeFragment_to_accountFragment, bundle);
+                navController.navigate(R.id.action_homeFragment_to_accountFragment);
             }
         });
     }
@@ -95,6 +100,9 @@ public class HomeFragment extends Fragment {
     private void initRecyclerView() {
         RecyclerView recyclerView = v.findViewById(R.id.parkedList);
         TextView emptyView = v.findViewById(R.id.empty_view);
+        shimmer.stopShimmer();
+        shimmer.hideShimmer();
+        shimmer.setVisibility(View.GONE);
         if (parkedCarsList.isEmpty()) {
             recyclerView.setVisibility(View.GONE);
             emptyView.setVisibility(View.VISIBLE);
@@ -122,7 +130,7 @@ public class HomeFragment extends Fragment {
         map1.put("carNickName", "Honda");
         map1.put("meterNo", "000001");
 
-        String st = "2021-03-09T12:25:25.165Z";
+        String st = "2021-03-11T08:25:25.165Z";
 
         try {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
@@ -178,20 +186,20 @@ public class HomeFragment extends Fragment {
                 /* save userInformation that can be passed to other pages */
                 if (response.code() == 200) {
                     meResult result = response.body();
-                    userInfo.put(Constants.firstName, result.getFirstName());
-                    userInfo.put(Constants.lastName, result.getLastName());
-                    userInfo.put(Constants.email, result.getEmail());
+                    MainActivity.sp.edit().putString(Constants.firstName, result.getFirstName()).apply();
+                    MainActivity.sp.edit().putString(Constants.lastName, result.getLastName()).apply();
+                    MainActivity.sp.edit().putString(Constants.email, result.getEmail()).apply();
                     MainActivity.sp.edit().putBoolean(Constants.admin, result.getAdmin()).apply();
 
                     TextView nameText = v.findViewById(R.id.Welcome);
-                    nameText.setText(Constants.welcome + userInfo.get(Constants.firstName) + Constants.exclamation);
+                    nameText.setText(Constants.welcome + MainActivity.sp.getString(Constants.firstName, null) + Constants.exclamation);
                 }
                 /* Unsuccessful API call handling */
                 else if (response.code() == 401) {
                     /* Authentication error: token expired */
                     Toast.makeText(getActivity(), Constants.tokenError, Toast.LENGTH_LONG).show();
                     // for now, just log out if token expires or if we get other API errors codes
-                    MainActivity.sp.edit().putBoolean(Constants.sp_logged, false).apply();
+                    Constants.tokenExpired();
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
@@ -272,7 +280,7 @@ public class HomeFragment extends Fragment {
                     /* Authentication error: token expired */
                     Toast.makeText(getActivity(), Constants.tokenError, Toast.LENGTH_LONG).show();
                     // for now, just log out if token expires or if we get other API errors codes
-                    MainActivity.sp.edit().putBoolean(Constants.sp_logged, false).apply();
+                    Constants.tokenExpired();
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
@@ -310,7 +318,7 @@ public class HomeFragment extends Fragment {
                 else if (response.code() == 401){
                     Toast.makeText(getActivity(), Constants.tokenError, Toast.LENGTH_LONG).show();
                     // for now, just log out if token expires or if we get other API errors codes
-                    MainActivity.sp.edit().putBoolean(Constants.sp_logged, false).apply();
+                    Constants.tokenExpired();
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);

@@ -2,6 +2,7 @@ package com.cpen391.userapp;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import androidx.appcompat.app.AppCompatActivity;
@@ -72,5 +73,13 @@ public class Constants {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
+
+    public static void tokenExpired(){
+        MainActivity.sp.edit().putBoolean(Constants.sp_logged, false).apply();
+        MainActivity.sp.edit().remove(Constants.email).apply();
+        MainActivity.sp.edit().remove(Constants.firstName).apply();
+        MainActivity.sp.edit().remove(Constants.lastName).apply();
+    }
+
 
 }

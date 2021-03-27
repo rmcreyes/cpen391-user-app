@@ -36,7 +36,8 @@
             android:id="@+id/historyList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
         </androidx.recyclerview.widget.RecyclerView>
         <TextView
@@ -46,6 +47,14 @@
             android:gravity="center"
             android:visibility="gone"
             android:text="@string/No_Parking_History_Yet" />
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <include
+                layout="@layout/shimmer_historyitem"/>
+        </com.facebook.shimmer.ShimmerFrameLayout>
     </LinearLayout>
 
 </LinearLayout>
