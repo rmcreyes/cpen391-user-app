@@ -64,6 +64,7 @@ public class Constants {
     public final static String unitPrice = "unitPrice";
     public final static String updated = "updated";
     public final static String admin= "admin";
+    public final static String isConfirmed= "isConfirmed";
 
 
     public static void closeKeyboard(Activity activity){

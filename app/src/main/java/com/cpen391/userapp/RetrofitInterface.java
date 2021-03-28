@@ -53,6 +53,8 @@ public interface RetrofitInterface {
 
     @GET("/api/meter/all")
     Call<List<meterResult>> getMeter ();
+    @POST("/api/meter/{meter_id}/reset")
+    Call<meterResult> resetMeter (@Path(value = "meter_id", encoded = true) String meterId);
 
     @GET("/api/parking/{user_id}/current")
     Call<currParkResult> getCurrParking (@Path(value = "user_id", encoded = true) String userId, @Header("Authorization") String authHeader);

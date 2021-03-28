@@ -93,7 +93,7 @@ public class HistoryFragment extends Fragment implements HistoryRecycler.OnItemL
      * Currently also adds pre-populated information to show format
      * */
     private void createList(){
-
+        historyList.clear();
         /* pre populated list */
         HashMap<String,String> map = new HashMap<String,String>();
         map.put("plateNo", "123ABC");

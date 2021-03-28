@@ -82,6 +82,7 @@ public class CarFragment extends Fragment implements CarsRecycler.OnItemListener
      *  Will be connected to database when backend car API is ready
      * */
     private void createList(){
+        carList.clear();
         getAllCars();
     }
 
@@ -98,7 +99,7 @@ public class CarFragment extends Fragment implements CarsRecycler.OnItemListener
             recyclerView.setVisibility(View.GONE);
             emptyView.setVisibility(View.VISIBLE);
 
-        }else {
+        } else{
             recyclerView.setVisibility(View.VISIBLE);
             emptyView.setVisibility(View.GONE);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);

@@ -20,13 +20,10 @@ import com.cpen391.userapp.Constants;
 import com.cpen391.userapp.MainActivity;
 import com.cpen391.userapp.R;
 import com.cpen391.userapp.RetrofitInterface;
-import com.cpen391.userapp.dashboardFragments.car.ParkedCarsRecycler;
-import com.cpen391.userapp.dashboardFragments.car.allCarsResult;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -123,14 +120,14 @@ public class HomeFragment extends Fragment {
      * Currently also adds pre-populated information to show format
      */
     private void createList() {
-
+        parkedCarsList.clear();
         /* add pre-populated data */
         HashMap<String, String> map1 = new HashMap<String, String>();
         map1.put("plateNo", "123ABC");
         map1.put("carNickName", "Honda");
         map1.put("meterNo", "000001");
 
-        String st = "2021-03-11T08:25:25.165Z";
+        String st = "2021-03-27T08:25:25.165Z";
 
         try {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");

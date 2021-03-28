@@ -26,6 +26,7 @@
             android:id="@+id/Header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="25dp"
             android:layout_marginBottom="25dp"
@@ -33,6 +34,18 @@
             android:textColor="@color/headerText"
             android:text="@string/Meter_Status"
             android:textSize="25dp" />
+
+        <ImageButton
+            android:id="@+id/refresh"
+            android:layout_weight="0.3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="8dp"
+            android:background="@null"
+            android:tint="@color/white"
+            android:src="@drawable/ic_baseline_refresh_24"
+            android:foreground="?android:attr/selectableItemBackground"/>
 
     </LinearLayout>
 

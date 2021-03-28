@@ -63,11 +63,11 @@
     <string name="Date">Date</string>
     <string name="Date_example">2021-03-04</string>
     <string name="Parked_At">Parked At</string>
-    <string name="Parked_At_example">10:00 AM</string>
+    <string name="Parked_At_example">01:00:00</string>
     <string name="Duration">Duration</string>
     <string name="Duration_example">00:56</string>
     <string name="Meter_Number">Meter Number</string>
-    <string name="Meter_Number_example">5a91ca</string>
+    <string name="Meter_Number_example">000001</string>
     <string name="Cost">Cost</string>
     <string name="cost_example">3.11</string>
 
@@ -84,5 +84,6 @@
     <string name="Unit_price">Unit Price (Hourly): $</string>
     <string name="No_Meters">No Registered Meters Yet!</string>
     <string name="Meter_Status">Meter Status</string>
+    <string name="Reset">Reset</string>
 
 </resources>

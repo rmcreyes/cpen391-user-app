@@ -14,6 +14,7 @@ public class meterResult {
     private String isOccupied;
     private String unitPrice;
     private String updated;
+    private String isConfirmed;
 
     public String getMeterNo() {
         return id;
@@ -31,7 +32,9 @@ public class meterResult {
         return updated;
     }
 
-
+    public String getIsConfirmed() {
+        return isConfirmed;
+    }
 }
 
 
