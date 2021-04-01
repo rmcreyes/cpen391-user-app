@@ -21,6 +21,7 @@
 
     <!-- car pages -->
     <string name="no_cars_registered">No Cars Registered Yet!</string>
+    <string name="payment_reminder">Remember to Register your Payment Information First.</string>
     <string name="Register_a_New_Car">Register a New Car!</string>
     <string name="Registered_cars">Registered Cars</string>
     <string name="Add_New_Plate">Add New Plate</string>

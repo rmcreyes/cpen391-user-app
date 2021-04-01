@@ -35,6 +35,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/** Fragment for the allowing users to view current parking information, access/modify personal info
+ * Also the screen that the user is directed to when first logged in
+ * */
 public class HomeFragment extends Fragment {
 
     private ArrayList<HashMap<String, String>> parkedCarsList = new ArrayList<>();
@@ -51,7 +54,7 @@ public class HomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
+        /* Inflate the layout for this fragment */
         v = inflater.inflate(R.layout.fragment_home, container, false);
         shimmer = v.findViewById(R.id.shimmer);
         shimmer.startShimmer();
@@ -121,55 +124,8 @@ public class HomeFragment extends Fragment {
      */
     private void createList() {
         parkedCarsList.clear();
-        /* add pre-populated data */
-        HashMap<String, String> map1 = new HashMap<String, String>();
-        map1.put("plateNo", "123ABC");
-        map1.put("carNickName", "Honda");
-        map1.put("meterNo", "000001");
-
-        String st = "2021-03-27T08:25:25.165Z";
-
-        try {
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-            Date startDate = format.parse(st);
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-            map1.put(Constants.startTime, sdf.format(startDate));
-            Date currentTime = Calendar.getInstance().getTime();
-            String duration = duration(startDate, currentTime);
-            map1.put(Constants.duration, duration);
-            map1.put("cost", calcCost(5,duration));
-        } catch (ParseException e) {
-            map1.put(Constants.startTime, st);
-        }
-
-        HashMap<String, String> map2 = new HashMap<String, String>();
-        map2.put("plateNo", "EFG345");
-        map2.put("carNickName", "Toyota");
-        map2.put("startTime", "10:00:00");
-        map2.put("meterNo", "000015");
-        map2.put("duration", "00:15");
-        map2.put("cost", "20.75");
-
-        HashMap<String, String> map3 = new HashMap<String, String>();
-        map3.put("plateNo", "789HIJ");
-        map3.put("carNickName", "Nissan");
-        map3.put("startTime", "15:00:00");
-        map3.put("meterNo", "000016");
-        map3.put("duration", "01:30");
-        map3.put("cost", "17.75");
-
-        parkedCarsList.add(map1);
-        parkedCarsList.add(map2);
-        parkedCarsList.add(map3);
-
         /* Query database */
         getCurrentParking();
-
-        for ( HashMap<String, String> car: parkedCarsList){
-            if (car.containsKey("carId")){
-                getOneCar(car);
-            }
-        }
     }
 
     /**
@@ -188,6 +144,16 @@ public class HomeFragment extends Fragment {
                     MainActivity.sp.edit().putString(Constants.email, result.getEmail()).apply();
                     MainActivity.sp.edit().putBoolean(Constants.admin, result.getAdmin()).apply();
 
+                    /* set if the user has their payment information set */
+                    if (result.hasPaymentId()){
+                        MainActivity.sp.edit().putBoolean(Constants.paymentSet, true).apply();
+                        MainActivity.sp.edit().putString(Constants.cvv, result.payment_getCvv()).apply();
+                        MainActivity.sp.edit().putString(Constants.expDate, result.payment_getExpDate()).apply();
+                        MainActivity.sp.edit().putString(Constants.cardNum, result.payment_getCardNum()).apply();
+                    }else{
+                        MainActivity.sp.edit().putBoolean(Constants.paymentSet, false).apply();
+                    }
+
                     TextView nameText = v.findViewById(R.id.Welcome);
                     nameText.setText(Constants.welcome + MainActivity.sp.getString(Constants.firstName, null) + Constants.exclamation);
                 }
@@ -195,7 +161,7 @@ public class HomeFragment extends Fragment {
                 else if (response.code() == 401) {
                     /* Authentication error: token expired */
                     Toast.makeText(getActivity(), Constants.tokenError, Toast.LENGTH_LONG).show();
-                    // for now, just log out if token expires or if we get other API errors codes
+                    /* just log out if token expires or if we get other API errors codes */
                     Constants.tokenExpired();
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -264,8 +230,16 @@ public class HomeFragment extends Fragment {
                         /* add item to list */
                         parkedCarsList.add(map);
                     }
-                    /* create the horizontal recycler view of the list */
-                    initRecyclerView();
+                    /* API call to get the details for each parked car */
+                    for ( int i = 0; i < parkedCarsList.size();i++){
+                        HashMap<String, String> car = parkedCarsList.get(i);
+                        boolean lastCarInList = false;
+                        if (i == parkedCarsList.size()-1){
+                            lastCarInList = true;
+                        }
+                        getOneCar(car, lastCarInList);
+                    }
+
                 }
                 /* Unsuccessful API call handling */
                 else if (response.code() == 404) {
@@ -295,9 +269,9 @@ public class HomeFragment extends Fragment {
     }
 
     /**
-     * Get  cars names for cars in the carlist
+     * API to get individual car info for cars in the car list
      */
-    private void getOneCar (HashMap<String, String> car){
+    private void getOneCar (HashMap<String, String> car, boolean lastInList){
         Call<oneCarResult> call = retrofitInterface.getOneCar(MainActivity.sp.getString(Constants.userId, ""), car.get("carId"),Constants.Bear + " " + MainActivity.sp.getString(Constants.token, ""));
         call.enqueue(new Callback<oneCarResult>() {
             @Override
@@ -324,6 +298,11 @@ public class HomeFragment extends Fragment {
                     Toast.makeText(getContext(), Constants.serverError, Toast.LENGTH_SHORT).show();
                     car.put(Constants.carNickName, "Error");
                 }
+
+                /* Last car in the list, initialize the recycler view */
+                if(lastInList){
+                    initRecyclerView();
+                }
             }
             @Override
             public void onFailure(Call<oneCarResult> call, Throwable t){
@@ -339,12 +318,16 @@ public class HomeFragment extends Fragment {
      * @param end_date End time of the instance
      * @return a String in HH:MM format as the duration between the two date objects
      */
-    static String duration(Date start_date, Date end_date) {
+    public static String duration(Date start_date, Date end_date) {
         /* calculate time difference in miliseconds*/
         long difference_In_Time
                 = end_date.getTime() - start_date.getTime();
 
         /* convert differences into hours and minutes*/
+        /* Adding one minute rounds up to the nearest minute (from the seconds)
+         * takes care of case when parking session is in the first minute of the hour (like 00:00:30), this already counts as parking for the hour
+         * */
+        difference_In_Time += 1000*60; // add one minute
         long difference_In_Minutes = (difference_In_Time / (1000 * 60)%60);
         long difference_In_Hours = (difference_In_Time / (1000 * 60 * 60));
 
@@ -354,14 +337,16 @@ public class HomeFragment extends Fragment {
 
     /**
      * Calculates the total cost based on the duration and hourly unit price
+     * We ROUND UP to the nearest HOUR, so cost( 00:00:01 ) = cost( 00:59:59) = price for 1 hour cost
      * @param unitPrice hourly unit price
      * @param duration String indicating the duration in Hours and minutes
      * @return string of the total cost
      */
-    static String calcCost(float unitPrice, String duration) {
+    public static String calcCost(float unitPrice, String duration) {
         String delims = "[:]";
         String[] tokens = duration.split(delims);
-        double timeHr = Math.ceil(Double.parseDouble(tokens[0]) + Double.parseDouble(tokens[1])/60);
+
+        double timeHr = Math.ceil(Double.parseDouble(tokens[0]) + ((Double.parseDouble(tokens[1]))/60));
         return(String.format("%.2f", timeHr*unitPrice));
     }
 }

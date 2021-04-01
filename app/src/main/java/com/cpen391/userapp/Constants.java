@@ -11,8 +11,8 @@ public class Constants {
 
     /* API call constant strings */
     /* Base url for server, change if want to just connect to localhost */
-    public final static String BASE_URL = "https://backend391.herokuapp.com/";
-    //public final static String BASE_URL = "http://10.0.2.2:80";
+    //public final static String BASE_URL = "https://backend391.herokuapp.com/";
+    public final static String BASE_URL = "http://10.0.2.2:80";
     public final static String Bear = "Bear";
     public final static String failedMessage = "API call Failed";
     public final static String saveSuccess ="Success! Changes Saved";
@@ -65,8 +65,18 @@ public class Constants {
     public final static String updated = "updated";
     public final static String admin= "admin";
     public final static String isConfirmed= "isConfirmed";
+    public final static String not_confirmed= "(Not Confirmed)";
+    public final static String confirmed= "(Confirmed)";
+    /* Payment */
+    public final static String paymentSet= "paymentSet";
+    public final static String cardNum= "cardNum";
+    public final static String expDate= "expDate";
+    public final static String cvv= "cvv";
 
 
+    /**
+     * Common method for ensuring that the keyboard is closed automatically
+     * */
     public static void closeKeyboard(Activity activity){
         View view = activity.getCurrentFocus();
         if(view != null) {
@@ -75,11 +85,13 @@ public class Constants {
         }
     }
 
+    /**
+     * Clears the current shared preference fields
+     * Function called when logging out (either when token expires, or when user manually clicks log out)
+     * */
     public static void tokenExpired(){
+        MainActivity.sp.edit().clear().apply();
         MainActivity.sp.edit().putBoolean(Constants.sp_logged, false).apply();
-        MainActivity.sp.edit().remove(Constants.email).apply();
-        MainActivity.sp.edit().remove(Constants.firstName).apply();
-        MainActivity.sp.edit().remove(Constants.lastName).apply();
     }
 
 

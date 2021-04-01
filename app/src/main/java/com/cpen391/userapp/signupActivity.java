@@ -110,7 +110,7 @@ public class signupActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    /*
+    /**
     * Check that all entries in the registration from are filled
     * */
     private boolean checkEntryValid(HashMap<String,String> map){

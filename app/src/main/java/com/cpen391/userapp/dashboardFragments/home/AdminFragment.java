@@ -35,7 +35,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
+/** Fragment for the allowing ADMINs to view meter status
+ * (and reset meter if error occurs during parking session)
+ * */
 public class AdminFragment extends Fragment implements MeterRecycler.OnResetListener {
 
     private ArrayList<HashMap<String,String>> meterList = new ArrayList<>();
@@ -53,6 +55,7 @@ public class AdminFragment extends Fragment implements MeterRecycler.OnResetList
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         retrofitInterface = retrofit.create(RetrofitInterface.class);
+
         /* Set up the list of registered cars */
         createList();
         return v;
@@ -105,29 +108,13 @@ public class AdminFragment extends Fragment implements MeterRecycler.OnResetList
      * */
     private void createList(){
         meterList.clear();
-        /* pre populated list */
-        HashMap<String,String> map1 = new HashMap<String,String>();
-        map1.put(Constants.meterNo, "100c91");
-        map1.put(Constants.unitPrice, "5");
-        map1.put(Constants.isOccupied,"true");
-        map1.put(Constants.isConfirmed,"true");
-        map1.put(Constants.updated, "Mon Mar 08 19:12:33 PST 2021");
-        meterList.add(map1);
-
-        HashMap<String,String> map2 = new HashMap<String,String>();
-        map2.put(Constants.meterNo, "4a92c1");
-        map2.put(Constants.unitPrice, "3.5");
-        map2.put(Constants.isOccupied,"true");
-        map2.put(Constants.isConfirmed,"false");
-        map2.put(Constants.updated, "Mon Mar 08 08:12:33 PST 2021");
-        meterList.add(map2);
 
         /* Query database */
         getAllMeters();
     }
 
     /**
-     * API call: Get all meters in the database registered under this account
+     * API call: Get all meter status
      */
     private void getAllMeters (){
         Call<List<meterResult>> call = retrofitInterface.getMeter();
@@ -146,7 +133,7 @@ public class AdminFragment extends Fragment implements MeterRecycler.OnResetList
                         meterMap.put(Constants.isOccupied,m.getIsOccupied());
                         meterMap.put(Constants.isConfirmed,m.getIsConfirmed());
 
-                        /* Format the timestamp */
+                        /* Format the timestamp for the last time meter was updated */
                         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                         try {
                             Date date = format.parse(m.getUpdated());
@@ -177,7 +164,7 @@ public class AdminFragment extends Fragment implements MeterRecycler.OnResetList
     }
 
     /**
-     * API call: Get all meters in the database registered under this account
+     * API call: Reset the clicked meter
      */
     private void resetMeter (HashMap<String, String> meter, MeterRecycler.ViewHolder holder){
         Call<meterResult> call = retrofitInterface.resetMeter(meter.get(Constants.meterNo));
@@ -190,7 +177,7 @@ public class AdminFragment extends Fragment implements MeterRecycler.OnResetList
                     /* Add all meter items to the list for the recycler view */
 
                     meter.put(Constants.meterNo, result.getMeterNo());
-                    //meter.put(Constants.unitPrice, result.getUnitPrice());
+                    meter.put(Constants.unitPrice, result.getUnitPrice());
                     meter.put(Constants.isOccupied,result.getIsOccupied());
                     meter.put(Constants.isConfirmed,result.getIsConfirmed());
 
@@ -198,23 +185,25 @@ public class AdminFragment extends Fragment implements MeterRecycler.OnResetList
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                     try {
                         Date date = format.parse(result.getUpdated());
-                         date = Calendar.getInstance().getTime();
                         meter.put(Constants.updated,date.toString());
                     } catch (ParseException e) {
                         meter.put(Constants.updated,result.getUpdated());
                     }
 
+                    /* Update the meter status card with the new status*/
                     String meterNoStr = meter.get(Constants.meterNo);
                     holder.meterNo.setText(meterNoStr.substring(meterNoStr.length() - 6));
                     holder.unitPrice.setText(meter.get(Constants.unitPrice));
                     holder.date.setText(meter.get(Constants.updated));
+
+                    /* Update the occupied /confirmed message accordingly  */
                     if (meter.get(Constants.isOccupied).equals("true")) {
                         holder.Occupied.setText(Constants.Occupied);
                         holder.Occupied.setTextColor(Color.RED);
                         if (meter.get(Constants.isConfirmed).equals("true")) {
-                            holder.Confirmed.setText("(Confirmed)");
+                            holder.Confirmed.setText(Constants.confirmed);
                         } else {
-                            holder.Confirmed.setText("(Not Confirmed)");
+                            holder.Confirmed.setText(Constants.not_confirmed);
                         }
                         holder.Confirmed.setVisibility(View.VISIBLE);
                     } else {
@@ -226,6 +215,7 @@ public class AdminFragment extends Fragment implements MeterRecycler.OnResetList
                 else if (response.code() == 401){
                     Toast.makeText(getContext(), Constants.systemError, Toast.LENGTH_SHORT).show();
                 }
+                /* any other return codes (unexpected) */
                 else {
                     Toast.makeText(getContext(), Constants.serverError, Toast.LENGTH_SHORT).show();
                 }
@@ -237,6 +227,9 @@ public class AdminFragment extends Fragment implements MeterRecycler.OnResetList
         });
     }
 
+    /**
+     *  On click method when the reset button is clicked for each meter card
+     **/
     @Override
     public void onResetClick(int position, MeterRecycler.ViewHolder holder) {
         HashMap<String, String> meter = meterList.get(position);

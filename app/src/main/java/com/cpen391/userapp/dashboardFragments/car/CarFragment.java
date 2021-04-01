@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +33,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/** Fragment for the allowing users to save and update license plate information
+ * */
 public class CarFragment extends Fragment implements CarsRecycler.OnItemListener {
 
     private ArrayList<HashMap<String,String>> carList = new ArrayList<>();
@@ -47,16 +50,20 @@ public class CarFragment extends Fragment implements CarsRecycler.OnItemListener
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
-
+        /* Inflate the layout for this fragment */
         v = inflater.inflate(R.layout.fragment_car,container,false);
+
+        /* set shimmer when loading car list until api call returns full list  */
         shimmer = v.findViewById(R.id.shimmer);
         shimmer.startShimmer();
+
         /* create Retrofit component for REST API communication */
         retrofit = new Retrofit.Builder()
                 .baseUrl(Constants.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         retrofitInterface = retrofit.create(RetrofitInterface.class);
+
         /* Set up the list of registered cars */
         createList();
         return v;
@@ -66,8 +73,15 @@ public class CarFragment extends Fragment implements CarsRecycler.OnItemListener
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
 
-        /* Navigation to adding a car to the account */
         Button addBtn = v.findViewById(R.id.addbtn);
+        addBtn.setEnabled(true);
+
+        /* Only allow users that have already added their payment information to add license plates */
+        if (!MainActivity.sp.getBoolean(Constants.paymentSet,false)){
+            addBtn.setEnabled(false);
+        }
+
+        /* Navigation to adding a car to the account */
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,7 +105,7 @@ public class CarFragment extends Fragment implements CarsRecycler.OnItemListener
     * */
     private void initRecyclerView(){
         RecyclerView recyclerView = v.findViewById(R.id.carList);
-        TextView emptyView = v.findViewById(R.id.empty_view);
+        LinearLayout emptyView = v.findViewById(R.id.empty_view);
         shimmer.stopShimmer();
         shimmer.hideShimmer();
         shimmer.setVisibility(View.GONE);
@@ -144,6 +158,7 @@ public class CarFragment extends Fragment implements CarsRecycler.OnItemListener
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 }
+                /* any other API call return codes */
                 else {
                     Toast.makeText(getContext(), Constants.serverError, Toast.LENGTH_SHORT).show();
                     initRecyclerView();
@@ -157,7 +172,7 @@ public class CarFragment extends Fragment implements CarsRecycler.OnItemListener
         });
     }
 
-    /* Navigation to the edit page of each cardView item (car item), when the card is clicked */
+    /** Navigation to the edit page of each cardView item (car item), when the card is clicked */
     @Override
     public void onItemClick(int position) {
         final NavController navController= Navigation.findNavController(v);

@@ -24,38 +24,44 @@ import retrofit2.http.Path;
 **/
 
 public interface RetrofitInterface {
+
+    /* LOGIN/ SIGN UP APIS*/
     @POST("/api/user/login")
     Call<loginResult> executeLogin(@Body HashMap<String, String> map);
-
     @POST("/api/user/signup")
     Call<loginResult> executeSignup (@Body HashMap<String, String> map);
 
+    /* User info API*/
     @GET("/api/user/me")
     Call<meResult> executeMe (@Header("Authorization") String authHeader);
-
     @PUT("/api/user/me")
     Call<Void> updateProfile (@Body HashMap<String, String> map, @Header("Authorization") String authHeader);
 
+    /* Payment info Update API*/
+    @POST("/api/payment/user/{user_id}")
+    Call<Void> setPayment (@Path(value = "user_id", encoded = true) String userId, @Body HashMap<String, String> map, @Header("Authorization") String authHeader);
+    @PUT("/api/payment/user/{user_id}")
+    Call<Void> updatePayment (@Path(value = "user_id", encoded = true) String userId, @Body HashMap<String, String> map, @Header("Authorization") String authHeader);
+
+    /* CAR API */
     @GET("/api/car/{user_id}")
     Call<allCarsResult> getAllCars (@Path(value = "user_id", encoded = true) String userId, @Header("Authorization") String authHeader);
-
     @POST("/api/car/{user_id}")
     Call<Void> postCar (@Path(value = "user_id", encoded = true) String userId, @Header("Authorization") String authHeader, @Body HashMap<String, String> map);
-
     @PUT("/api/car/{user_id}/{car_id}")
     Call<Void> updateCar (@Path(value = "user_id", encoded = true) String userId, @Path(value = "car_id", encoded = true) String carId, @Header("Authorization") String authHeader, @Body HashMap<String, String> map);
-
     @DELETE("/api/car/{user_id}/{car_id}")
     Call<Void> deleteCar (@Path(value = "user_id", encoded = true) String userId, @Path(value = "car_id", encoded = true) String carId, @Header("Authorization") String authHeader);
-
     @GET("/api/car/{user_id}/{car_id}")
     Call<oneCarResult> getOneCar (@Path(value = "user_id", encoded = true) String userId, @Path(value = "car_id", encoded = true) String carId, @Header("Authorization") String authHeader);
 
+    /* METER API*/
     @GET("/api/meter/all")
     Call<List<meterResult>> getMeter ();
     @POST("/api/meter/{meter_id}/reset")
     Call<meterResult> resetMeter (@Path(value = "meter_id", encoded = true) String meterId);
 
+    /* Parking API */
     @GET("/api/parking/{user_id}/current")
     Call<currParkResult> getCurrParking (@Path(value = "user_id", encoded = true) String userId, @Header("Authorization") String authHeader);
     @GET("/api/parking/{user_id}/previous")

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Used for GET requests of /api/${userId}
+ * Used for GET requests of "/api/parking/{user_id}/previous"
  */
 public class historyResult {
     private ArrayList<HashMap<String,String>> previousParkings;
