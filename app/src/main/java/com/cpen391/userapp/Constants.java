@@ -11,8 +11,8 @@ public class Constants {
 
     /* API call constant strings */
     /* Base url for server, change if want to just connect to localhost */
-    //public final static String BASE_URL = "https://backend391.herokuapp.com/";
-    public final static String BASE_URL = "http://10.0.2.2:80";
+    public final static String BASE_URL = "https://backend391.herokuapp.com/";
+    //public final static String BASE_URL = "http://10.0.2.2:80";
     public final static String Bear = "Bear";
     public final static String failedMessage = "API call Failed";
     public final static String saveSuccess ="Success! Changes Saved";
