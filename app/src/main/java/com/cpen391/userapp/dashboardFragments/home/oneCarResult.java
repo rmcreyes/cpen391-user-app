@@ -1,6 +1,6 @@
 package com.cpen391.userapp.dashboardFragments.home;
 /**
- * Used for GET requests of /user/me
+ * Used for GET requests of "/api/car/{user_id}/{car_id}"
  */
 public class oneCarResult {
     private String carName;
@@ -17,9 +17,6 @@ public class oneCarResult {
         return id;
     }
 
-    public String getLicensePlate() {
-        return licensePlate;
-    }
     public String getUserId() {
         return userId;
     }

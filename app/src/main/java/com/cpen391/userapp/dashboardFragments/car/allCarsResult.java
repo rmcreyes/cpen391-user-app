@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Used for GET requests of /api/${userId}
+ * Used for GET requests of "/api/car/{user_id}"
  */
 public class allCarsResult {
     private ArrayList<HashMap<String,String>> cars;

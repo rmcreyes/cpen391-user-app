@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+/* splash animation modified from: https://assets10.lottiefiles.com/packages/lf20_lBxRvS.json */
 public class SplashActivity extends AppCompatActivity {
     Handler handler;
 

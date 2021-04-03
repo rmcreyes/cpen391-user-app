@@ -26,14 +26,19 @@ public class loginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        /* Create retrofit object for API calls*/
         retrofit = new Retrofit.Builder()
                 .baseUrl(Constants.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         retrofitInterface = retrofit.create(RetrofitInterface.class);
+
+        /* Connect with UI components*/
         Button loginBtn = findViewById(R.id.login);
         EditText emailEdit = findViewById(R.id.emailEdit);
         EditText passwordEdit = findViewById(R.id.passwordEdit);
+
+        /* Connect with server to try to log in */
         loginBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
@@ -55,9 +60,11 @@ public class loginActivity extends AppCompatActivity {
                             MainActivity.sp.edit().putString(Constants.email,result.getEmail()).apply();
                             userValid();
                         }
+                        /* Unsuccessful log in (due to incorrect credentials) */
                         else if (response.code() == 401){
                             Toast.makeText(loginActivity.this, Constants.login_Incorrect_msg, Toast.LENGTH_LONG).show();
                         }
+                        /* Other error codes returned */
                         else {
                             Toast.makeText(loginActivity.this, Constants.login_error_msg, Toast.LENGTH_LONG).show();
                         }

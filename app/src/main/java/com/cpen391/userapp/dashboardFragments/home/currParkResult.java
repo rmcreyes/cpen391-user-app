@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Used for GET requests of /api/${userId}
+ * Used for GET requests of "/api/parking/{user_id}/current"
  */
 public class currParkResult {
     private ArrayList<HashMap<String,String>> currentParkings;

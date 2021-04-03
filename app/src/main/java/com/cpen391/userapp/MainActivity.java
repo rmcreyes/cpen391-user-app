@@ -8,6 +8,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
+/**
+ * Main screen when app first starts up
+ */
 public class MainActivity extends AppCompatActivity {
     public static SharedPreferences sp;
 
@@ -39,7 +42,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    /* Directly sent user to the dashboard activity without requiring them to log in again */
+    /**
+     *  Directly sent user to the dashboard activity without requiring them to log in again
+     *  */
     private void loggedin (){
         Intent intent = new Intent(MainActivity.this, dashboardActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

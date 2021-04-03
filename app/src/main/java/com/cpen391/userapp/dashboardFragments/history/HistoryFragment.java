@@ -33,7 +33,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
+/** Fragment for the allowing users to view past parking history
+ * */
 public class HistoryFragment extends Fragment implements HistoryRecycler.OnItemListener {
 
     private ArrayList<HashMap<String,String>> historyList = new ArrayList<>();
@@ -45,6 +46,7 @@ public class HistoryFragment extends Fragment implements HistoryRecycler.OnItemL
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
+        /* Inflate the layout for this fragment */
         v = inflater.inflate(R.layout.fragment_history,container,false);
         shimmer = v.findViewById(R.id.shimmer);
         shimmer.startShimmer();
@@ -93,46 +95,7 @@ public class HistoryFragment extends Fragment implements HistoryRecycler.OnItemL
      * Currently also adds pre-populated information to show format
      * */
     private void createList(){
-
-        /* pre populated list */
-        HashMap<String,String> map = new HashMap<String,String>();
-        map.put("plateNo", "123ABC");
-        map.put("carNickName", "Honda");
-        map.put("cost", "15.35");
-        map.put("meterNo", "000020");
-
-        String st = "2021-03-08T02:25:25.165Z";
-        String ed = "2021-03-08T05:47:50.165Z";
-
-        try {
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-            /* Convert start time to date and time components*/
-            Date startDate = format.parse(st);
-            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-            map.put(Constants.startTime, timeFormat.format(startDate));
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            map.put(Constants.date, dateFormat.format(startDate));
-
-            /* calculate duration */
-            Date endDate = format.parse(ed);
-            map.put(Constants.duration, duration(startDate, endDate));
-
-        } catch (ParseException e) {
-            map.put(Constants.startTime, (st));
-        }
-
-        historyList.add(map);
-        for(int i =0; i < 10; i++){
-            HashMap<String,String> map1 = new HashMap<String,String>();
-            map1.put("plateNo", "123ABC");
-            map1.put("carNickName", "Honda");
-            map1.put("date", "2021-01-22");
-            map1.put("cost", "10.75");
-            map1.put("meterNo", "000020");
-            map1.put("duration", "00:50");
-            map1.put("startTime", "10:00:00");
-            historyList.add(map1);
-        }
+        historyList.clear();
 
         /* Query database */
         getPastParking();
@@ -213,12 +176,16 @@ public class HistoryFragment extends Fragment implements HistoryRecycler.OnItemL
      * @param end_date End time of the instance
      * @return a String in HH:MM format as the duration between the two date objects
      */
-    static String duration(Date start_date, Date end_date) {
+    public static String duration(Date start_date, Date end_date) {
         /* calculate time difference in miliseconds*/
         long difference_In_Time
                 = end_date.getTime() - start_date.getTime();
 
         /* convert differences into hours and minutes*/
+        /* Adding one minute rounds up to the nearest minute (from the seconds)
+         * takes care of case when parking session is in the first minute of the hour (like 00:00:30), this already counts as parking for the hour
+         * */
+        difference_In_Time += 1000*60; // add one minute
         long difference_In_Minutes = (difference_In_Time / (1000 * 60)%60);
         long difference_In_Hours = (difference_In_Time / (1000 * 60 * 60));
 

@@ -7,13 +7,16 @@ import java.util.HashMap;
  * Used for GET requests of /meter/all
  */
 import java.util.List;
-
+/**
+ * Used for requests of "/api/meter/all" and "/api/meter/{meter_id}/reset"
+ */
 public class meterResult {
 
     private String id;
     private String isOccupied;
     private String unitPrice;
-    private String updated;
+    private String isConfirmed;
+    private String updatedAt;
 
     public String getMeterNo() {
         return id;
@@ -28,10 +31,12 @@ public class meterResult {
     }
 
     public String getUpdated() {
-        return updated;
+        return updatedAt;
     }
 
-
+    public String getIsConfirmed() {
+        return isConfirmed;
+    }
 }
 
 

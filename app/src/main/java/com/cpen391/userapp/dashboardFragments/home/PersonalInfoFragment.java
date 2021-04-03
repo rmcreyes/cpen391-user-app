@@ -101,7 +101,7 @@ public class PersonalInfoFragment extends Fragment {
         map.put(Constants.lastName, lastNameEdit.getText().toString());
         map.put(Constants.firstName, firstNameEdit.getText().toString());
 
-
+        /* API call including auth token*/
         Call<Void> call = retrofitInterface.updateProfile(map, "Bear "+ MainActivity.sp.getString(Constants.token, ""));
         call.enqueue(new Callback<Void>() {
             @Override
@@ -115,6 +115,7 @@ public class PersonalInfoFragment extends Fragment {
                     MainActivity.sp.edit().putString(Constants.email, emailEdit.getText().toString()).apply();
 
                 }
+                /* If an error code returned (usually due to an invalid input) */
                 else if (response.code() == 422){
                     try {
                         JSONObject jObjError = new JSONObject(response.errorBody().string());
@@ -123,6 +124,7 @@ public class PersonalInfoFragment extends Fragment {
                         Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 }
+                /* authentication token expired */
                 else if (response.code() == 401){
                     // for now just log out if token expires or if we get other API errors codes
                     Constants.tokenExpired();

@@ -1,4 +1,4 @@
-package com.cpen391.userapp.dashboardFragments.car;
+package com.cpen391.userapp.dashboardFragments.home;
 
 import android.content.Context;
 import android.view.LayoutInflater;

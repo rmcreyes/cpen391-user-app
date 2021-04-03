@@ -38,25 +38,36 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/carList"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
             android:orientation="horizontal"
-            android:visibility="gone">
+            android:visibility="gone"
+            android:gravity="center">
 
         </androidx.recyclerview.widget.RecyclerView>
 
-        <TextView
+        <LinearLayout
             android:id="@+id/empty_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="@string/no_cars_registered"
-            android:visibility="gone" />
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/no_cars_registered" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/payment_reminder" />
+        </LinearLayout>
 
         <com.facebook.shimmer.ShimmerFrameLayout
             android:id="@+id/shimmer"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center">
             <include
