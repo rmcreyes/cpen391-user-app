@@ -26,6 +26,7 @@ import com.cpen391.userapp.RetrofitInterface;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.regex.Pattern;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -80,12 +81,20 @@ public class addPlateFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Constants.closeKeyboard(getActivity());
-                retrofit = new Retrofit.Builder()
-                        .baseUrl(Constants.BASE_URL)
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
-                retrofitInterface = retrofit.create(RetrofitInterface.class);
-                postCar();
+                Pattern p = Pattern.compile("[^A-Z0-9 ]");
+
+                /* check if entered plate number is valid */
+                if(p.matcher(plateNo.getText().toString()).find()){
+                    Toast.makeText(getContext(), "Invalid Entry: Please enter a valid plate number with only letters and spaces.", Toast.LENGTH_SHORT).show();
+                } else {
+                    /* submit the plate */
+                    retrofit = new Retrofit.Builder()
+                            .baseUrl(Constants.BASE_URL)
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+                    retrofitInterface = retrofit.create(RetrofitInterface.class);
+                    postCar();
+                }
             }
         });
     }
