@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.TimeZone;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -123,14 +124,25 @@ public class HistoryFragment extends Fragment implements HistoryRecycler.OnItemL
                             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                             /* Convert start time to date and time components*/
                             Date startDate = format.parse(m.get(Constants.startTime));
+
+                            /* calculate duration */
+                            Date endDate = format.parse(m.get(Constants.endTime));
+                            map.put(Constants.duration, duration(startDate, endDate));
+
+                            /* Convert start time into current time zone*/
+                            TimeZone tz = Calendar.getInstance().getTimeZone();
+                            int offset = tz.getOffset(Calendar.DST_OFFSET) + tz.getDSTSavings();
+                            Calendar c = Calendar.getInstance();
+                            c.setTime(startDate);
+                            c.add(Calendar.SECOND, offset/1000);
+                            startDate = c.getTime();
+
+                            /* Save start date and time */
                             SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
                             map.put(Constants.startTime, timeFormat.format(startDate));
                             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                             map.put(Constants.date, dateFormat.format(startDate));
 
-                            /* calculate duration */
-                            Date endDate = format.parse(m.get(Constants.endTime));
-                            map.put(Constants.duration, duration(startDate, endDate));
 
                         } catch (ParseException e) {
                             map.put(Constants.startTime, (m.get(Constants.startTime)));

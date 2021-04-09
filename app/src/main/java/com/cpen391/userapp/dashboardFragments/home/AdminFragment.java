@@ -29,6 +29,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TimeZone;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -136,7 +137,14 @@ public class AdminFragment extends Fragment implements MeterRecycler.OnResetList
                         /* Format the timestamp for the last time meter was updated */
                         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                         try {
+                            /* Convert to current time zone */
                             Date date = format.parse(m.getUpdated());
+                            TimeZone tz = Calendar.getInstance().getTimeZone();
+                            int offset = tz.getOffset(Calendar.DST_OFFSET) + tz.getDSTSavings();
+                            Calendar c = Calendar.getInstance();
+                            c.setTime(date);
+                            c.add(Calendar.SECOND, offset/1000);
+                            date = c.getTime();
                             meterMap.put(Constants.updated,date.toString());
                         } catch (ParseException e) {
                             meterMap.put(Constants.updated,m.getUpdated());
