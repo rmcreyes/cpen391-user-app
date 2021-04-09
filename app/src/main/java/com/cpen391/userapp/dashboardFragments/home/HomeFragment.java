@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.TimeZone;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -213,10 +214,19 @@ public class HomeFragment extends Fragment {
                         try {
                             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                             Date startDate = format.parse(m.get(Constants.startTime));
-                            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-                            /* Save the starting time */
-                            map.put(Constants.startTime, sdf.format(startDate));
                             Date currentTime = Calendar.getInstance().getTime();
+
+                            /* Convert start time into current time zone*/
+                            TimeZone tz = Calendar.getInstance().getTimeZone();
+                            int offset = tz.getOffset(Calendar.DST_OFFSET)+ tz.getDSTSavings();
+                            Calendar c = Calendar.getInstance();
+                            c.setTime(startDate);
+                            c.add(Calendar.SECOND, offset/1000);
+                            startDate = c.getTime();
+
+                            /* Save the starting time */
+                            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+                            map.put(Constants.startTime, sdf.format(startDate));
 
                             /* calculate the duration till now */
                             String duration = duration(startDate, currentTime);
