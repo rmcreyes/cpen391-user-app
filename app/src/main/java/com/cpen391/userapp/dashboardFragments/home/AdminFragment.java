@@ -193,6 +193,12 @@ public class AdminFragment extends Fragment implements MeterRecycler.OnResetList
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                     try {
                         Date date = format.parse(result.getUpdated());
+                        TimeZone tz = Calendar.getInstance().getTimeZone();
+                        int offset = tz.getOffset(Calendar.DST_OFFSET) + tz.getDSTSavings();
+                        Calendar c = Calendar.getInstance();
+                        c.setTime(date);
+                        c.add(Calendar.SECOND, offset/1000);
+                        date = c.getTime();
                         meter.put(Constants.updated,date.toString());
                     } catch (ParseException e) {
                         meter.put(Constants.updated,result.getUpdated());
@@ -217,6 +223,7 @@ public class AdminFragment extends Fragment implements MeterRecycler.OnResetList
                     } else {
                         holder.Occupied.setText(Constants.Empty);
                         holder.Occupied.setTextColor(Color.BLUE);
+                        holder.Confirmed.setVisibility(View.GONE);
                     }
                 }
                 /* Unsuccessful API call handling */

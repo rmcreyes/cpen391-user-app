@@ -70,6 +70,7 @@ public class MeterRecycler extends RecyclerView.Adapter<MeterRecycler.ViewHolder
         } else {
             holder.Occupied.setText(Constants.Empty);
             holder.Occupied.setTextColor(Color.BLUE);
+            holder.Confirmed.setVisibility(View.GONE);
         }
     }
 
